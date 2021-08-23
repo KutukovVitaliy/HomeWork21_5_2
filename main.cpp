@@ -3,66 +3,73 @@
 int main() {
 
 
-    int RegionsQuantity, BuildingsQuantity, tmp;
-    std::vector<region> Regions;
-    region TmpRegion;
+    int regionsQuantity, buildingsQuantity, tmp;
+    float villageArea, allBuildsArea = 0;
+    std::vector<region> regions;
+    region tmpRegion;
 
+    std::cout << "Input village area:" ;
+    std::cin >> villageArea;
     std::cout << "Input quantity of regions: ";
-    std::cin >> RegionsQuantity;
-    for(int i = 0; i < RegionsQuantity; ++i){
-        TmpRegion.Number = i+1;
+    std::cin >> regionsQuantity;
+    for(int i = 0; i < regionsQuantity; ++i){
+        tmpRegion.number = i + 1;
         std::cout << "Input total quantity of buildings at region number #" << i+1 << ": ";
-        std::cin >> BuildingsQuantity;
-        for(int j = 0; j < BuildingsQuantity; ++j){
-            std::cout << "Input type of build(1 - house, 2 - utility build :";
+        std::cin >> buildingsQuantity;
+        for(int j = 0; j < buildingsQuantity; ++j){
+            std::cout << "Input type of build #" << j+1 <<" (1 - house, 2 - utility build) :";
             std::cin >> tmp;
             if(tmp == 2){
-                build TmpBuild;
+                build tmpBuild;
                 std::cout << "Input build area: ";
-                std::cin >> TmpBuild.area;
+                std::cin >> tmpBuild.area;
+                allBuildsArea += tmpBuild.area;
                 std::cout << "How many furnace in the build?(0 - if no): ";
-                std::cin >> TmpBuild.furnace;
-                std::cout << "What's the type of build?(0 - " << Build_Type[0] << " 1 = " << Build_Type[1] << " 2 - "
-                    << Build_Type[2] << "): ";
+                std::cin >> tmpBuild.furnace;
+                std::cout << "What's the type of build #" << j + 1 << "?(0 - " << buildType[0] << " 1 = " << buildType[1] << " 2 - "
+                          << buildType[2] << "): ";
                 int temp;
                 std::cin >> temp;
-                TmpBuild.BuildType = static_cast<build_type>(temp);
-                TmpRegion.Build.push_back(TmpBuild);
+                tmpBuild.type = static_cast<build_type>(temp);
+                tmpRegion.buildInRegion.push_back(tmpBuild);
             }
             else if(tmp == 1){
-                house TmpHouse;
+                house tmpHouse;
                 std::cout << "Input house area: ";
-                std::cin >> TmpHouse.area;
+                std::cin >> tmpHouse.area;
+                allBuildsArea += tmpHouse.area;
                 std::cout << "How many furnace in the house?(0 - if no): ";
-                std::cin >> TmpHouse.furnace;
-                int IntFloor;
+                std::cin >> tmpHouse.furnace;
+                int intFloor;
                 std::cout << "How many floor in the house?: ";
-                std::cin >> IntFloor;
-                floor TmpFloor;
-                for(int g = 0; g < IntFloor; ++g){
+                std::cin >> intFloor;
+                floor tmpFloor;
+                for(int g = 0; g < intFloor; ++g){
                     std::cout << "Input the height of floor #" << g+1 << ": ";
-                    std::cin >> TmpFloor.Height;
-                    int IntRooms;
-                    room TmpRoom;
+                    std::cin >> tmpFloor.height;
+                    int intRooms;
+                    room tmpRoom;
                     std::cout << "Input quantity of room in the floor #" << g+1 << ": ";
-                    std::cin >> IntRooms;
-                    for(int k = 0; k < IntRooms; ++k){
+                    std::cin >> intRooms;
+                    for(int k = 0; k < intRooms; ++k){
                         std::cout << "Input the area of room #" << k+1 << ": ";
-                        std::cin >> TmpRoom.Area;
-                        std::cout << "Input the type of room #" << k+1 << ":(0 - " << Room_Type[0] << " 1 - " <<
-                            Room_Type[1] << " 2 - " << Room_Type[2] << " 3 - " << Room_Type[3] <<
-                            " 4 - " << Room_Type[4] << " ): ";
+                        std::cin >> tmpRoom.area;
+                        std::cout << "Input the type of room #" << k+1 << ":(0 - " << roomType[0] << " 1 - " <<
+                                  roomType[1] << " 2 - " << roomType[2] << " 3 - " << roomType[3] <<
+                                  " 4 - " << roomType[4] << " ): ";
                         int temp;
                         std::cin >> temp;
-                        TmpRoom.RoomType = static_cast<roomtype>(temp);
-                        TmpFloor.Room.push_back(TmpRoom);
+                        tmpRoom.room_type = static_cast<roomtype>(temp);
+                        tmpFloor.roomInFloor.push_back(tmpRoom);
                     }
-                    TmpHouse.Floor.push_back(TmpFloor);
+                    tmpHouse.floorInHouse.push_back(tmpFloor);
                 }
-                TmpRegion.House.push_back(TmpHouse);
+                tmpRegion.houseInRegion.push_back(tmpHouse);
             }
         }
-        Regions.push_back(TmpRegion);
+        regions.push_back(tmpRegion);
     }
+    std::cout << "The percentage of land occupied by buildings is equal to " << (allBuildsArea / villageArea) * 100 <<
+        "/%" << std::endl;
     return 0;
 }
